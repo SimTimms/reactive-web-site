@@ -8,4 +8,5 @@ export interface ICard {
   qr?: string;
   bgColor?: string;
   years?: number;
+  sound?: string;
 }
