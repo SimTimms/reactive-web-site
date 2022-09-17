@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
 
 import { backend, frontEnd, infrastructure, data } from '../../data/skillCards';
@@ -7,6 +7,7 @@ import { ISpeech } from '../../interface/ISpeech';
 import { useStyles } from './styles';
 import { Button } from './Button';
 import { ENUM_COLORS } from '../../enum';
+import { Parallax } from 'react-scroll-parallax';
 
 export const MenuCardsOne = React.memo(
   (props: { toggleTheme: (value: ISpeech) => void; powerOn: boolean }) => {
@@ -72,6 +73,9 @@ export const MenuCardsOne = React.memo(
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
+          height: '100vh',
+          background: '#353b45',
+          zIndex: 20,
         }}
       >
         <div

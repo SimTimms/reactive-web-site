@@ -1,26 +1,24 @@
 import { ClassNames } from '@emotion/react';
 import { Typography } from '@mui/material';
 import { useStyles } from './styles';
+import clsx from 'clsx';
 
 export const TextButton = (props: {
-  left: number;
-  top?: number;
-  bottom?: number;
   title: string;
+  menuOn: boolean;
+  index: number;
 }) => {
   const classes = useStyles({ props: { bottom: 100 } });
-
+  const { index, menuOn, title } = props;
   return (
     <Typography
       variant="body2"
-      className={classes.rootButton}
-      style={{
-        left: `${props.left}%`,
-        top: props.top || '',
-        bottom: props.bottom || '',
-      }}
+      className={clsx({
+        [classes.rootButton]: true,
+        [classes.menuOn]: menuOn,
+      })}
     >
-      {props.title}
+      {title}
     </Typography>
   );
 };

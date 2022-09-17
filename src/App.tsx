@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { reactiveWeb } from './assets';
 import { ThemeProvider } from '@mui/material/styles';
-import { Typography } from '@mui/material';
 import { theme } from './theme';
 import { useStyles } from './styles';
 import { menuCards } from './data/menuCards';
-import { menuCardsOne } from './data/menuCardsOne';
-import { skillCards } from './data/skillCards';
 import { cvCards } from './data/cvCards';
-import { businessCards } from './data/businessCards';
+import { Screens } from './components/Screens';
+import { Screen2 } from './components/Screens/Screen2';
+import { Screen3 } from './components/Screens/Screen3';
 //Helpers
 import { speechObject, skillSpeech } from './helpers/speeches';
 //Components
 import CollectibleCard from './modules/module-collectible-card';
 import PowerButton from './components/PowerButton';
+import MenuButton from './components/MenuButton';
 import Logo from './components/Logo';
 import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
@@ -24,6 +23,11 @@ import { MenuCardsOne } from './components/MenuCardsOne';
 import { ISpeech } from './interface/ISpeech';
 import { tim } from './assets';
 import { TextButton } from './components/TextButton';
+import { ParallaxProvider } from 'react-scroll-parallax';
+import { Parallax } from 'react-scroll-parallax';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import clsx from 'clsx';
+
 function App() {
   const classes = useStyles();
   //STATE - Does it need to refresh the entire App?
@@ -43,23 +47,56 @@ function App() {
 
   const [loadGrid, setLoadGrid] = useState(false);
   const [speechOn, setSpeechOn] = useState(false);
+  const [menuOn, setMenuOn] = useState(false);
 
   const loader = useRef<null | HTMLDivElement>(null);
+  const menuLoader = useRef<null | HTMLDivElement>(null);
+  const scrollPage = useRef<null | HTMLDivElement>(null);
+
+  const [scrollPosition, setPosition] = useState(0);
+
+  function updatePosition() {
+    const position = window.pageYOffset;
+    setPosition(position);
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', updatePosition);
+    // updatePosition();
+    return () => window.removeEventListener('scroll', updatePosition);
+  }, []);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
       (entries: IntersectionObserverEntry[]) => {
         const target = entries[0];
+
         if (target.isIntersecting) {
           !loadGrid && setLoadGrid(true);
           //  !speechOn && setSpeechOn(true);
         }
       },
-      [loadGrid, speechOn]
+      [loadGrid, speechOn, menuOn]
+    );
+
+  const handleObserver1: (entries: IntersectionObserverEntry[]) => void =
+    useCallback(
+      (entries: IntersectionObserverEntry[]) => {
+        const target = entries[0];
+        if (!target.isIntersecting) {
+          //  !menuOn && setMenuOn(true);
+        } else {
+          // menuOn && setMnuOn(false);
+        }
+      },
+      [menuOn]
     );
 
   function toggleLoadButton(): void {
     setPowerOn(powerOn ? false : true);
+  }
+
+  function toggleMenuButton(): void {
+    setMenuOn(menuOn ? false : true);
   }
 
   function toggleSkillsOn(): void {
@@ -85,86 +122,132 @@ function App() {
       rootMargin: '0px',
       threshold: 1,
     };
+
     const observer = new IntersectionObserver(handleObserver, option);
-    if (loader.current) observer.observe(loader.current);
+    // if (loader.current) observer.observe(loader.current);
   }, [handleObserver]);
+
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    };
+
+    const observer1 = new IntersectionObserver(handleObserver1, option);
+    //if (menuLoader.current) observer1.observe(menuLoader.current);
+  }, [handleObserver1]);
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <Logo isOn={powerOn} />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100vw',
-            height: '100vh',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          <TextButton left={50} top={40} title="Recruiters" />
-          <TextButton left={60} top={80} title="Web Sites" />
-          <TextButton left={70} top={120} title="Freelance" />
-
-          <img
-            src={tim}
-            className={`${classes.tim} ${powerOn && classes.timOn}`}
-          />
-          <TextButton left={20} bottom={120} title="Reviews" />
-          <TextButton left={30} bottom={80} title="Projects" />
-          <TextButton left={40} bottom={40} title="Tech-Stack" />
-        </div>
-
-        {loadGrid && powerOn && (
-          <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
-        )}
-
-        <div
-          ref={loader}
-          style={{
-            marginTop: 75,
-            marginBottom: 75,
-            height: 20,
-            textAlign: 'center',
-            width: '100%',
-          }}
-        ></div>
-        <div className={classes.column} style={{ marginTop: 0 }}>
-          {/* <div className={classes.state2} style={{ marginTop: 80 }}>
+      <ParallaxProvider>
+        <div className={classes.root} ref={scrollPage}>
+          <Logo isOn={powerOn} />
+          <MenuButton powerOn={powerOn} onClickEvent={toggleMenuButton} />
+          <PowerButton loadCards={powerOn} onClickEvent={toggleLoadButton} />
+          <div ref={menuLoader}></div>
+          <div
+            className={clsx({
+              [classes.menuWrapper]: true,
+              [classes.menuWrapperOn]: menuOn,
+            })}
+          >
+            {[
+              'Recruiters',
+              'Web Sites',
+              'Freelance',
+              'Reviews',
+              'Projects',
+              'Tech-Stack',
+            ].map((item, index) => (
+              <TextButton
+                menuOn={menuOn}
+                title={item}
+                key={`Button-${index}`}
+                index={index}
+              />
+            ))}
+          </div>
+          <Parallax speed={-100}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100vw',
+                height: '100vh',
+                justifyContent: 'center',
+                position: 'relative',
+              }}
+            >
+              <img
+                src={tim}
+                className={`${classes.tim} ${
+                  powerOn && !menuOn && classes.timOn
+                }`}
+              />
+            </div>
+          </Parallax>
+          <div
+            style={{
+              width: '100vw',
+              height: '100vh',
+              zIndex: 12,
+              position: 'relative',
+            }}
+          >
+            <Parallax speed={70}>
+              <Screen3 />
+            </Parallax>
+            <Parallax speed={50}>
+              <Screen2 />
+            </Parallax>
+            <Parallax speed={140}>
+              <Screens />
+            </Parallax>
+          </div>
+          {/*
+          {loadGrid && powerOn && (
+            <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
+          )}
+          <KeyboardDoubleArrowDownIcon />
+          <div ref={loader}>Loader</div>
+          */}
+          <div className={classes.column} style={{ marginTop: 0 }}>
+            {/* <div className={classes.state2} style={{ marginTop: 80 }}>
             {powerOn && <SkillCards toggleTheme={toggleTheme} />}
         </div>*/}
-          <div className={classes.state1}>
-            {powerOn &&
-              cardDeck.map((card, index) => (
-                <CollectibleCard
-                  key={`card_${index}_${Math.random() * 300}`}
-                  card={card}
-                  onClickEvent={
-                    index === 0
-                      ? toggleSkillsOn
-                      : index === 1
-                      ? toggleAvailability
-                      : undefined
-                  }
-                  delay={index + 1}
-                />
-              ))}
-          </div>
-          <SpeechBubble powerOn={speechOn} values={speech} />
+            <div className={classes.state1}>
+              {powerOn &&
+                cardDeck.map((card, index) => (
+                  <CollectibleCard
+                    key={`card_${index}_${Math.random() * 300}`}
+                    card={card}
+                    onClickEvent={
+                      index === 0
+                        ? toggleSkillsOn
+                        : index === 1
+                        ? toggleAvailability
+                        : undefined
+                    }
+                    delay={index + 1}
+                  />
+                ))}
+            </div>
+            <SpeechBubble powerOn={speechOn} values={speech} />
 
-          <div className={classes.state2}>
-            {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
-          </div>
+            <div className={classes.state2}>
+              {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
+            </div>
 
-          <div className={classes.row}>{dashboardArray}</div>
-          <PowerButton loadCards={powerOn} onClickEvent={toggleLoadButton} />
-          <div style={{ position: 'fixed', bottom: 0 }}>
-            Contact | Availablility | GitHub | Skills | Companies | Projects |
-            Example
+            <div className={classes.row}>{dashboardArray}</div>
+
+            <div style={{ position: 'fixed', bottom: 0 }}>
+              Contact | Availablility | GitHub | Skills | Companies | Projects |
+              Example
+            </div>
           </div>
         </div>
-      </div>
+      </ParallaxProvider>
     </ThemeProvider>
   );
 }
