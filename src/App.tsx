@@ -4,9 +4,7 @@ import { theme } from './theme';
 import { useStyles } from './styles';
 import { menuCards } from './data/menuCards';
 import { cvCards } from './data/cvCards';
-import { Screens } from './components/Screens';
-import { Screen2 } from './components/Screens/Screen2';
-import { Screen3 } from './components/Screens/Screen3';
+
 //Helpers
 import { speechObject, skillSpeech } from './helpers/speeches';
 //Components
@@ -17,6 +15,7 @@ import Logo from './components/Logo';
 import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
 import { BusinessCards } from './components/BusinessCards';
+import { Flyover } from './components/Flyover';
 import { ThemeContext } from './context/ctxSpeech';
 import { SkillCards } from './components/SkillCards';
 import { MenuCardsOne } from './components/MenuCardsOne';
@@ -187,24 +186,7 @@ function App() {
               />
             </div>
           </Parallax>
-          <div
-            style={{
-              width: '100vw',
-              height: '100vh',
-              zIndex: 12,
-              position: 'relative',
-            }}
-          >
-            <Parallax speed={70}>
-              <Screen3 />
-            </Parallax>
-            <Parallax speed={50}>
-              <Screen2 />
-            </Parallax>
-            <Parallax speed={140}>
-              <Screens />
-            </Parallax>
-          </div>
+          <Flyover powerOn={powerOn} />
           {/*
           {loadGrid && powerOn && (
             <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
