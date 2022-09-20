@@ -63,10 +63,11 @@ export const spotifyAPI = (setTrack: (props: IRadio) => void) => {
         },
       })
       .then(function (response) {
+        const isPlaying = response.data.item;
         setTrack({
-          name: response.data.item.name,
+          name: isPlaying ? isPlaying.name : '',
           isPlaying: response.data.is_playing,
-          artist: response.data.item.artists[0].name,
+          artist: isPlaying ? isPlaying.artists[0].name : '',
         });
       })
       .catch(function (error) {
@@ -98,10 +99,13 @@ export const spotifyAPI = (setTrack: (props: IRadio) => void) => {
                     }
                   )
                   .then(function (response) {
+                    const isPlaying = response.data.item;
                     setTrack({
-                      name: response.data.item.name,
+                      name: isPlaying ? response.data.item.name : '',
                       isPlaying: response.data.is_playing,
-                      artist: response.data.item.artists[0].name,
+                      artist: isPlaying
+                        ? response.data.item.artists[0].name
+                        : '',
                     });
                   })
                   .catch(function (error) {

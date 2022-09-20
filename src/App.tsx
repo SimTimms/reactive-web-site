@@ -21,6 +21,15 @@ import Logo from './components/Logo';
 import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 function App() {
   const classes = useStyles();
   //STATE - Does it need to refresh the entire App?
@@ -45,6 +54,11 @@ function App() {
   const unfadeTim = useRef<null | HTMLDivElement>(null);
   const menuLoader = useRef<null | HTMLDivElement>(null);
   const scrollPage = useRef<null | HTMLDivElement>(null);
+  const mobile = useMediaQuery('(max-width:700px)');
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+  const [windowOffset, setWindowOffset] = useState<number>();
 
   const [scrollPosition, setPosition] = useState(0);
 
@@ -53,10 +67,18 @@ function App() {
   }
 
   useEffect(() => {
+    function handleResize() {
+      if (getWindowDimensions().height < windowDimensions.height) {
+        setWindowOffset(getWindowDimensions().height - windowDimensions.height);
+        setWindowDimensions(getWindowDimensions());
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', updatePosition);
     // updatePosition();
     return () => window.removeEventListener('scroll', updatePosition);
-  }, []);
+  }, [windowDimensions]);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
@@ -129,10 +151,15 @@ function App() {
     setSpeechOn(true);
   }
 
+  console.log(windowOffset);
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
-        <div className={classes.root} ref={scrollPage}>
+        <div
+          className={classes.root}
+          ref={scrollPage}
+          style={{ marginTop: windowOffset }}
+        >
           <Logo isOn={powerOn} />
           <MenuButton powerOn={powerOn} onClickEvent={toggleMenuButton} />
           <PowerButton loadCards={powerOn} onClickEvent={toggleLoadButton} />
