@@ -2,33 +2,24 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import { useStyles } from './styles';
-import { menuCards } from './data/menuCards';
-import { cvCards } from './data/cvCards';
+import { ParallaxProvider } from 'react-scroll-parallax';
+import { Parallax } from 'react-scroll-parallax';
+import clsx from 'clsx';
 
 //Helpers
 import { speechObject, skillSpeech } from './helpers/speeches';
 //Components
-import { Radio } from './Radio';
-import CollectibleCard from './modules/module-collectible-card';
+import { Radio } from './components/Radio/Radio';
+import { Flyover } from './components/Flyover';
+import { MenuCardsOne } from './components/MenuCardsOne';
+import { ISpeech } from './interface/ISpeech';
+import { Tim } from './Tim';
+import { TextButton } from './components/TextButton';
 import PowerButton from './components/PowerButton';
 import MenuButton from './components/MenuButton';
 import Logo from './components/Logo';
 import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
-import { BusinessCards } from './components/BusinessCards';
-import { Flyover } from './components/Flyover';
-import { ThemeContext } from './context/ctxSpeech';
-import { SkillCards } from './components/SkillCards';
-import { MenuCardsOne } from './components/MenuCardsOne';
-import { ISpeech } from './interface/ISpeech';
-import { Tim } from './Tim';
-import { TextButton } from './components/TextButton';
-import { ParallaxProvider } from 'react-scroll-parallax';
-import { Parallax } from 'react-scroll-parallax';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import clsx from 'clsx';
-import axios from 'axios';
-import qs from 'qs';
 
 function App() {
   const classes = useStyles();
@@ -45,7 +36,6 @@ function App() {
   //No - This should dispay/hide the availability widget
   const [availability, setAvailability] = useState<boolean>(false);
   //No - The card deck should us individual data arrays
-  const [cardDeck, setCardDeck] = useState(menuCards);
   //Maybe - Might not be usedf
   const [dashboardArray, setDashboardArray] = useState<JSX.Element[]>([]);
 
@@ -79,8 +69,8 @@ function App() {
 
         if (target.isIntersecting) {
           !loadFlyover && setLoadFlyover(true);
-          // !loadGrid && setLoadGrid(true);
-          //  !speechOn && setSpeechOn(true);
+          !loadGrid && setLoadGrid(true);
+          !speechOn && setSpeechOn(true);
         }
       },
       [loadGrid, speechOn, menuOn, loadFlyover]
@@ -116,6 +106,7 @@ function App() {
 
     const observer2 = new IntersectionObserver(fadeTimHandler, option);
     if (fadeTim.current) observer2.observe(fadeTim.current);
+
     const observer3 = new IntersectionObserver(unfadeTimHandler, option);
     if (unfadeTim.current) observer3.observe(unfadeTim.current);
   }, [handleObserver, fadeTimHandler, unfadeTimHandler]);
@@ -164,6 +155,7 @@ function App() {
 
   function toggleTheme(value: ISpeech) {
     setSpeech(value);
+    setSpeechOn(true);
   }
 
   return (
@@ -202,29 +194,31 @@ function App() {
               scrollPosition={scrollPosition}
               powerOn={powerOn}
               menuOn={menuOn}
+              setSpeech={toggleTheme}
             />
           </Parallax>
           <Parallax speed={50}>
-            <div ref={fadeTim}>
+            <div
+              ref={fadeTim}
+              onClick={() => toggleTheme(speechObject('radio'))}
+            >
               <Radio powerOn={powerOn} />
             </div>
           </Parallax>
           {loadFlyover && <Flyover powerOn={powerOn} />}
-          <div ref={loader}>Loader</div>
-          {/*
+          <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
-            */}
-          {/*
+
           {loadGrid && powerOn && (
-            <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
+            <Parallax speed={50}>
+              <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
+            </Parallax>
           )}
-          <KeyboardDoubleArrowDownIcon />
-          <div ref={loader}>Loader</div>
-          */}
           {/*
-          <div className={classes.column} style={{ marginTop: 0 }}>*/}
-          {/* <div className={classes.state2} style={{ marginTop: 80 }}>
-            {powerOn && <SkillCards toggleTheme={toggleTheme} />}
+          <div className={classes.column} style={{ marginTop: 0 }}>
+            <div className={classes.state2} style={{ marginTop: 80 }}>
+              {powerOn && <SkillCards toggleTheme={toggleTheme} />}
+            </div>
         </div>*/}
           {/*
             <div className={classes.state1}>

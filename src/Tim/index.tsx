@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useStyles } from './styles';
 import { tim } from '../assets';
-
+import { speechObject } from '../helpers/speeches';
+import { ISpeech } from '../interface/ISpeech';
 export const Tim = (props: {
   scrollPosition: number;
   powerOn: boolean;
   menuOn: boolean;
+  setSpeech: (props: ISpeech) => void;
 }) => {
-  const { scrollPosition, powerOn, menuOn } = props;
+  const { scrollPosition, powerOn, menuOn, setSpeech } = props;
   const classes = useStyles();
   return (
     <div
@@ -22,6 +24,7 @@ export const Tim = (props: {
       }}
     >
       <img
+        onClick={() => setSpeech(speechObject('aboutMe'))}
         src={tim}
         className={`${classes.tim} ${powerOn && !menuOn && classes.timOn}`}
         style={{

@@ -7,6 +7,7 @@ export const useStyles = makeStyles(() => ({
     marginRight: 'auto',
     boxSizing: 'border-box',
     height: '100vh',
+    cursor: 'pointer',
   },
   timOn: {
     transition: 'all 500ms',

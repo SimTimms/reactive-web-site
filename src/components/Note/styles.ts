@@ -3,11 +3,11 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles(() => ({
   noteWrapper: {
     zIndex: 12,
-    opacity: 1,
     width: '10%',
     marginRight: '2%',
     boxSizing: 'border-box',
     filter: 'grayscale(100%) brightness(200%)',
+    opacity: 0.8,
     overflow: 'hidden',
     height: '100%',
     position: 'relative',

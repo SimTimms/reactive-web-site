@@ -41,7 +41,7 @@ export default function SpeechBubble(props: {
           if (boldComplete && !strComplete) {
             setPrintString(`${printString}${textIn[printString.length]}`);
           }
-        }, 20)
+        }, 18)
       : null;
     setIsOn(powerOn);
     boldComplete && strComplete && interval && clearInterval(interval);

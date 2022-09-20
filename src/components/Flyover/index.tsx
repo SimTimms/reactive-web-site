@@ -33,7 +33,7 @@ export const Flyover = (props: { powerOn: boolean }) => {
     <div
       style={{
         width: '100vw',
-        height: powerOn ? '100vh' : '0vh',
+        height: powerOn ? '' : '0vh',
         overflow: powerOn ? 'visible' : 'hidden',
         zIndex: 12,
         marginTop: '-2%',
