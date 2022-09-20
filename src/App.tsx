@@ -69,6 +69,7 @@ function App() {
   useEffect(() => {
     function handleResize() {
       if (getWindowDimensions().height < windowDimensions.height && mobile) {
+        alert(getWindowDimensions().height < windowDimensions.height);
         window.scrollTo(0, window.pageYOffset - 50);
         setWindowDimensions(getWindowDimensions());
       }
