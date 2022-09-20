@@ -65,13 +65,13 @@ export const Radio = (props: { powerOn: boolean }) => {
           }}
           onClick={() => screenChange()}
         >
-          <Typography className={classes.screenText} variant="body2">
+          <Typography variant="body2" className={classes.screenText}>
             {powerOn && track.isPlaying ? track.name : ''}
           </Typography>
           <Typography
+            variant="body2"
             className={classes.screenText}
             style={{ opacity: 0.7 }}
-            variant="body2"
           >
             {powerOn && track.isPlaying
               ? track.artist

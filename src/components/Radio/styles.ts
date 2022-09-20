@@ -58,7 +58,7 @@ export const useStyles = makeStyles(() => ({
 
   screenText: {
     color: '#fff',
-    fontSize: '1.2vw',
+    fontSize: '1.2vw !important',
     width: '100%',
     textAlign: 'center',
   },
