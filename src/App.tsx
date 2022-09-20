@@ -51,13 +51,12 @@ function App() {
   function updatePosition() {
     const position = window.pageYOffset;
   }
-  /*DEPR
+
   useEffect(() => {
     window.addEventListener('scroll', updatePosition);
     // updatePosition();
     return () => window.removeEventListener('scroll', updatePosition);
   }, []);
-  */
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
