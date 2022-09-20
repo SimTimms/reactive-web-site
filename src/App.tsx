@@ -68,8 +68,8 @@ function App() {
 
   useEffect(() => {
     function handleResize() {
-      if (getWindowDimensions().height < windowDimensions.height) {
-        setWindowOffset(getWindowDimensions().height - windowDimensions.height);
+      if (getWindowDimensions().height < windowDimensions.height && mobile) {
+        window.scrollTo(0, window.pageYOffset - 50);
         setWindowDimensions(getWindowDimensions());
       }
     }
@@ -78,7 +78,7 @@ function App() {
     window.addEventListener('scroll', updatePosition);
     // updatePosition();
     return () => window.removeEventListener('scroll', updatePosition);
-  }, [windowDimensions]);
+  }, [windowDimensions, scrollPage]);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
@@ -151,15 +151,10 @@ function App() {
     setSpeechOn(true);
   }
 
-  console.log(windowOffset);
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
-        <div
-          className={classes.root}
-          ref={scrollPage}
-          style={{ marginTop: windowOffset }}
-        >
+        <div className={classes.root} ref={scrollPage}>
           <Logo isOn={powerOn} />
           <MenuButton powerOn={powerOn} onClickEvent={toggleMenuButton} />
           <PowerButton loadCards={powerOn} onClickEvent={toggleLoadButton} />
