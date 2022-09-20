@@ -4,9 +4,11 @@ import { Screen2 } from './Screens/Screen2';
 import { Screen3 } from './Screens/Screen3';
 import { Parallax } from 'react-scroll-parallax';
 import { Typography } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const Flyover = (props: { powerOn: boolean }) => {
   const { powerOn } = props;
+  const mobile = useMediaQuery('(max-width:700px)');
   const [hasLoaded, setHasLoaded] = useState<boolean>(false);
   const [videoLoaded, setVideoLoaded] = useState<boolean[]>([
     false,
@@ -57,12 +59,12 @@ export const Flyover = (props: { powerOn: boolean }) => {
       <Parallax speed={140}>
         <Screens onReadyCB={onReadyCB} />
       </Parallax>
-      {videoLoaded[0] && (
+      {(videoLoaded[0] || mobile) && (
         <Parallax speed={50}>
           <Screen2 onReadyCB={onReadyCB} />
         </Parallax>
       )}
-      {videoLoaded[1] && (
+      {(videoLoaded[1] || mobile) && (
         <Parallax speed={70}>
           <Screen3 onReadyCB={onReadyCB} />
         </Parallax>

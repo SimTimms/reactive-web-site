@@ -9,7 +9,7 @@ export const Screen2 = (props: { onReadyCB: (index: number) => void }) => {
   const classes = useStyles();
   const mobile = useMediaQuery('(max-width:700px)');
   const [powerOn, setPowerOn] = useState<boolean>(false);
-
+  const [lightMode, setLightMode] = useState<boolean>(false);
   return (
     <div
       style={{
@@ -31,7 +31,11 @@ export const Screen2 = (props: { onReadyCB: (index: number) => void }) => {
           position: 'absolute',
           zIndex: 2,
         }}
-        onClick={() => setPowerOn(powerOn ? false : true)}
+        onClick={() =>
+          mobile && !lightMode
+            ? setLightMode(true)
+            : setPowerOn(powerOn ? false : true)
+        }
       ></div>
       <div
         className={clsx({
@@ -49,6 +53,7 @@ export const Screen2 = (props: { onReadyCB: (index: number) => void }) => {
         onReady={() => props.onReadyCB(1)}
         width="16%"
         height="20%"
+        light={mobile && !lightMode}
         style={{
           position: 'absolute',
           top: mobile ? '30%' : '28%',

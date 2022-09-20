@@ -9,6 +9,7 @@ export const Screens = (props: { onReadyCB: (index: number) => void }) => {
   const classes = useStyles();
   const [powerOn, setPowerOn] = useState<boolean>(false);
   const mobile = useMediaQuery('(max-width:700px)');
+  const [lightMode, setLightMode] = useState<boolean>(false);
 
   return (
     <div
@@ -31,7 +32,11 @@ export const Screens = (props: { onReadyCB: (index: number) => void }) => {
           position: 'absolute',
           zIndex: 2,
         }}
-        onClick={() => setPowerOn(powerOn ? false : true)}
+        onClick={() =>
+          mobile && !lightMode
+            ? setLightMode(true)
+            : setPowerOn(powerOn ? false : true)
+        }
       ></div>
       <div
         className={classes.shadow}
@@ -52,6 +57,7 @@ export const Screens = (props: { onReadyCB: (index: number) => void }) => {
         muted={true}
         loop={true}
         playing={true}
+        light={mobile && !lightMode}
         width="30%"
         height="32%"
         onReady={() => props.onReadyCB(0)}

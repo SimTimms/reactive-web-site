@@ -8,6 +8,7 @@ export const Screen3 = (props: { onReadyCB: (index: number) => void }) => {
   const classes = useStyles();
   const mobile = useMediaQuery('(max-width:700px)');
   const [powerOn, setPowerOn] = useState<boolean>(false);
+  const [lightMode, setLightMode] = useState<boolean>(false);
 
   return (
     <div
@@ -30,20 +31,25 @@ export const Screen3 = (props: { onReadyCB: (index: number) => void }) => {
           position: 'absolute',
           zIndex: 2,
         }}
-        onClick={() => setPowerOn(powerOn ? false : true)}
+        onClick={() =>
+          mobile && !lightMode
+            ? setLightMode(true)
+            : setPowerOn(powerOn ? false : true)
+        }
       ></div>
       <div
         className={clsx({
           [classes.blankScreen]: true,
           [classes.blankScreenOff]: powerOn,
         })}
-        style={{ width: '23%', height: '30%', left: '34%', top: '24%' }}
+        style={{ width: '23%', height: '32%', left: '34%', top: '24%' }}
       ></div>
       <ReactPlayer
         url="https://www.youtube.com/watch?v=PRBiXGckgFs"
         controls={false}
         muted={true}
         loop={true}
+        light={mobile && !lightMode}
         playing={true}
         onReady={() => props.onReadyCB(2)}
         width="40%"
