@@ -161,7 +161,7 @@ function App() {
             ))}
           </div>
           <Parallax speed={1}>
-            <div ref={unfadeTim}></div>
+            <div ref={unfadeTim} style={{ marginTop: 20 }}></div>
             <Tim
               scrollPosition={scrollPosition}
               powerOn={powerOn}
