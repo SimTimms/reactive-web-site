@@ -36,7 +36,7 @@ export const Radio = (props: { powerOn: boolean }) => {
       <Typography variant="h1" className={classes.h1Title}>
         API<span style={{ color: '#aaa' }}> Integrations</span>
       </Typography>
-      <div className={classes.wrapperTwo}>
+      <div className={classes.wrapperTwo} onClick={() => screenChange()}>
         <img
           src={radio}
           style={{
@@ -63,7 +63,6 @@ export const Radio = (props: { powerOn: boolean }) => {
             background: track.isPlaying && powerOn ? '#08bdbf' : '#222',
             filter: `grayscale(0%) brightness(100%) hue-rotate(${screenColor}deg)`,
           }}
-          onClick={() => screenChange()}
         >
           <Typography variant="body2" className={classes.screenText}>
             {powerOn && track.isPlaying ? track.name : ''}

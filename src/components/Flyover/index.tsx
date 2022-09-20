@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Screens } from '../Screens';
-import { Screen2 } from '../Screens/Screen2';
-import { Screen3 } from '../Screens/Screen3';
+import { Screens } from './Screens';
+import { Screen2 } from './Screens/Screen2';
+import { Screen3 } from './Screens/Screen3';
 import { Parallax } from 'react-scroll-parallax';
 import { Typography } from '@mui/material';
 
@@ -17,9 +17,9 @@ export const Flyover = (props: { powerOn: boolean }) => {
   function onReadyCB(index: number) {
     const arrCopy = [...videoLoaded];
     arrCopy.splice(index, 1, true);
-    console.log(arrCopy);
     setVideoLoaded(arrCopy);
   }
+
   useEffect(() => {
     if (powerOn && !hasLoaded) {
       setHasLoaded(true);

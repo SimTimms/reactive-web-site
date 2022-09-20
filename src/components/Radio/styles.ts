@@ -25,6 +25,7 @@ export const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     margin: 'auto',
+    cursor: 'pointer',
   },
   wrapperThree: {
     position: 'absolute',
@@ -53,7 +54,6 @@ export const useStyles = makeStyles(() => ({
     overflow: 'hidden',
     border: '1px solid #444',
     boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
   },
 
   screenText: {

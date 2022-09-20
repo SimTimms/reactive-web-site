@@ -5,7 +5,7 @@ export const useStyles = makeStyles(() => ({
     background: '#fff',
     borderRadius: 10,
     padding: 20,
-    minWidth: 300,
+    minWidth: 100,
     maxWidth: 500,
     width: '80%',
     position: 'fixed',

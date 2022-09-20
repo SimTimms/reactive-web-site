@@ -252,6 +252,7 @@ function App() {
               Example
                   </div>
           </div>*/}
+          <div style={{ height: '100vh', width: '100%' }}></div>
         </div>
       </ParallaxProvider>
     </ThemeProvider>
