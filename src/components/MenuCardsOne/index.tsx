@@ -80,7 +80,7 @@ export const MenuCardsOne = React.memo(
       >
         <div
           style={{
-            width: '90vh',
+            width: '90vw',
             display: 'flex',
             justifyContent: 'center',
           }}
@@ -116,7 +116,7 @@ export const MenuCardsOne = React.memo(
           style={{
             display: 'flex',
             alignItems: 'center',
-            width: '90vh',
+            width: '90vw',
             height: '90vh',
             justifyContent: 'center',
             position: 'relative',

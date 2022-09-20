@@ -209,11 +209,12 @@ function App() {
           <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
 
+          {/*
           {loadGrid && powerOn && (
             <Parallax speed={50}>
               <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
             </Parallax>
-          )}
+          )}*/}
           {/*
           <div className={classes.column} style={{ marginTop: 0 }}>
             <div className={classes.state2} style={{ marginTop: 80 }}>
