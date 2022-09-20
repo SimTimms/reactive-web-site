@@ -8,6 +8,7 @@ import { cvCards } from './data/cvCards';
 //Helpers
 import { speechObject, skillSpeech } from './helpers/speeches';
 //Components
+import { Radio } from './Radio';
 import CollectibleCard from './modules/module-collectible-card';
 import PowerButton from './components/PowerButton';
 import MenuButton from './components/MenuButton';
@@ -20,12 +21,14 @@ import { ThemeContext } from './context/ctxSpeech';
 import { SkillCards } from './components/SkillCards';
 import { MenuCardsOne } from './components/MenuCardsOne';
 import { ISpeech } from './interface/ISpeech';
-import { tim } from './assets';
+import { Tim } from './Tim';
 import { TextButton } from './components/TextButton';
 import { ParallaxProvider } from 'react-scroll-parallax';
 import { Parallax } from 'react-scroll-parallax';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import clsx from 'clsx';
+import axios from 'axios';
+import qs from 'qs';
 
 function App() {
   const classes = useStyles();
@@ -34,6 +37,8 @@ function App() {
   const [powerOn, setPowerOn] = useState<boolean>(false);
   //Maybe - Legacy code that needs to be refactored
   const [skillOn, setSkillsOn] = useState<boolean>(false);
+  const [apiToken, setAPIToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   //No - This should only affect the speech man but the trigger action is on a different component so use Context
   const [speech, setSpeech] = useState<ISpeech>(speechObject('welcome'));
 
@@ -45,10 +50,13 @@ function App() {
   const [dashboardArray, setDashboardArray] = useState<JSX.Element[]>([]);
 
   const [loadGrid, setLoadGrid] = useState(false);
+  const [loadFlyover, setLoadFlyover] = useState(false);
   const [speechOn, setSpeechOn] = useState(false);
   const [menuOn, setMenuOn] = useState(false);
 
   const loader = useRef<null | HTMLDivElement>(null);
+  const fadeTim = useRef<null | HTMLDivElement>(null);
+  const unfadeTim = useRef<null | HTMLDivElement>(null);
   const menuLoader = useRef<null | HTMLDivElement>(null);
   const scrollPage = useRef<null | HTMLDivElement>(null);
 
@@ -56,8 +64,8 @@ function App() {
 
   function updatePosition() {
     const position = window.pageYOffset;
-    setPosition(position);
   }
+
   useEffect(() => {
     window.addEventListener('scroll', updatePosition);
     // updatePosition();
@@ -70,13 +78,48 @@ function App() {
         const target = entries[0];
 
         if (target.isIntersecting) {
-          !loadGrid && setLoadGrid(true);
+          !loadFlyover && setLoadFlyover(true);
+          // !loadGrid && setLoadGrid(true);
           //  !speechOn && setSpeechOn(true);
         }
       },
-      [loadGrid, speechOn, menuOn]
+      [loadGrid, speechOn, menuOn, loadFlyover]
     );
 
+  const fadeTimHandler: (entries: IntersectionObserverEntry[]) => void =
+    useCallback((entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+
+      if (target.isIntersecting) {
+        setPosition(500);
+      }
+    }, []);
+
+  const unfadeTimHandler: (entries: IntersectionObserverEntry[]) => void =
+    useCallback((entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+
+      if (target.isIntersecting) {
+        setPosition(0);
+      }
+    }, []);
+
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+    if (loader.current) observer.observe(loader.current);
+
+    const observer2 = new IntersectionObserver(fadeTimHandler, option);
+    if (fadeTim.current) observer2.observe(fadeTim.current);
+    const observer3 = new IntersectionObserver(unfadeTimHandler, option);
+    if (unfadeTim.current) observer3.observe(unfadeTim.current);
+  }, [handleObserver, fadeTimHandler, unfadeTimHandler]);
+  /*
   const handleObserver1: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
       (entries: IntersectionObserverEntry[]) => {
@@ -90,6 +133,18 @@ function App() {
       [menuOn]
     );
 
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    };
+
+    const observer1 = new IntersectionObserver(handleObserver1, option);
+    //if (menuLoader.current) observer1.observe(menuLoader.current);
+  }, [handleObserver1]);
+   
+  } */
   function toggleLoadButton(): void {
     setPowerOn(powerOn ? false : true);
   }
@@ -110,32 +165,6 @@ function App() {
   function toggleTheme(value: ISpeech) {
     setSpeech(value);
   }
-
-  useEffect(() => {
-    skillOn && setCardDeck(cvCards);
-  }, [powerOn, skillOn]);
-
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1,
-    };
-
-    const observer = new IntersectionObserver(handleObserver, option);
-    // if (loader.current) observer.observe(loader.current);
-  }, [handleObserver]);
-
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1,
-    };
-
-    const observer1 = new IntersectionObserver(handleObserver1, option);
-    //if (menuLoader.current) observer1.observe(menuLoader.current);
-  }, [handleObserver1]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -167,26 +196,24 @@ function App() {
               />
             ))}
           </div>
-          <Parallax speed={-100}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100vw',
-                height: '100vh',
-                justifyContent: 'center',
-                position: 'relative',
-              }}
-            >
-              <img
-                src={tim}
-                className={`${classes.tim} ${
-                  powerOn && !menuOn && classes.timOn
-                }`}
-              />
+          <Parallax speed={1}>
+            <div ref={unfadeTim}></div>
+            <Tim
+              scrollPosition={scrollPosition}
+              powerOn={powerOn}
+              menuOn={menuOn}
+            />
+          </Parallax>
+          <Parallax speed={50}>
+            <div ref={fadeTim}>
+              <Radio powerOn={powerOn} />
             </div>
           </Parallax>
-          <Flyover powerOn={powerOn} />
+          {loadFlyover && <Flyover powerOn={powerOn} />}
+          <div ref={loader}>Loader</div>
+          {/*
+          <SpeechBubble powerOn={speechOn} values={speech} />
+            */}
           {/*
           {loadGrid && powerOn && (
             <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
@@ -194,10 +221,12 @@ function App() {
           <KeyboardDoubleArrowDownIcon />
           <div ref={loader}>Loader</div>
           */}
-          <div className={classes.column} style={{ marginTop: 0 }}>
-            {/* <div className={classes.state2} style={{ marginTop: 80 }}>
+          {/*
+          <div className={classes.column} style={{ marginTop: 0 }}>*/}
+          {/* <div className={classes.state2} style={{ marginTop: 80 }}>
             {powerOn && <SkillCards toggleTheme={toggleTheme} />}
         </div>*/}
+          {/*
             <div className={classes.state1}>
               {powerOn &&
                 cardDeck.map((card, index) => (
@@ -215,7 +244,7 @@ function App() {
                   />
                 ))}
             </div>
-            <SpeechBubble powerOn={speechOn} values={speech} />
+         
 
             <div className={classes.state2}>
               {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
@@ -226,8 +255,8 @@ function App() {
             <div style={{ position: 'fixed', bottom: 0 }}>
               Contact | Availablility | GitHub | Skills | Companies | Projects |
               Example
-            </div>
-          </div>
+                  </div>
+          </div>*/}
         </div>
       </ParallaxProvider>
     </ThemeProvider>

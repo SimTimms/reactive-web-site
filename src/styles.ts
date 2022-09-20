@@ -31,17 +31,6 @@ export const useStyles = makeStyles(() => ({
     opacity: 1,
   },
 
-  tim: {
-    transition: 'all 1700ms',
-    filter: 'grayscale(100%) brightness(30%)',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    boxSizing: 'border-box',
-    height: '100vh',
-  },
-  timOn: {
-    filter: 'grayscale(0%) brightness(100%)',
-  },
   column: {
     display: 'flex',
     flexDirection: 'column',

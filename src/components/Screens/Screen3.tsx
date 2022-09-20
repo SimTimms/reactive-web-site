@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player/youtube';
 import { bftv } from '../../assets';
 import { Parallax } from 'react-scroll-parallax';
 
-export const Screen3 = () => {
+export const Screen3 = (props: { onReadyCB: (index: number) => void }) => {
   const classes = useStyles();
 
   return (
@@ -33,6 +33,7 @@ export const Screen3 = () => {
         muted={true}
         loop={true}
         playing={true}
+        onReady={() => props.onReadyCB(2)}
         width="40%"
         height="27%"
         style={{ position: 'absolute', top: '7.5vw', left: '11vw' }}

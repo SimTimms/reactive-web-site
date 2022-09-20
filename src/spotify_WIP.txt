@@ -1,0 +1,154 @@
+/*
+ var client_id = 'd6ab89a68d7242e6b8c36a1c61d0a6cb';
+    var client_secret = '6f2e5512c0c04e47ae6e8eb3a62f5483';
+    var redirect_uri = 'http://localhost:3000';
+
+    !apiToken &&
+      axios
+        .get('https://accounts.spotify.com/authorize', {
+          params: {
+            response_type: 'token',
+            client_id,
+            redirect_uri,
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          setAPIToken(response.data.access_token);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+*/
+/*
+    const at =
+      'BQDWQyScfXlNkESVtDnbhneng8an_R5YH4Tf7A63vMojdZwHq5JkUgYaYr7SlMMEcxYq14wUAtNlyFFdFcmiXNtFHApr0N_8KoZgHtZSY4ltz3kSoLaG0By0UEExgznH9yv2CMxJqMw0oD-gTv-8IgV4I1zJNt6c5h6illgXXdh-gfYvz5YO';
+
+    const rt =
+      'AQBVRX8sIxR5RAqBlqx3vgoH1i5LZw8Cs1MS-wFk7xuvNQfLw-nBUzZSkBAQGVAJO4zMwx84B5x40G-wOW3aT18pDL-cnVJHtQsLhZyH0S3-K0FjJvyXWBr0zjmvivv4Xug';
+    //Generate API code
+    console.log(
+      `https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`
+    );
+    const apiCode =
+      'AQBe6QMV_4JOcgpWXD2GdWzJep4eaMQ_8Fb7SydJpf_juvxt4LNO6wSJZxnSAYe8LPuNUnf1GZKRflpTgUJsUO_DYxQRYMUnwujG9HAnQajb1IZNv69gr0MBLle7Y-FSbFMtaMhuPy1GV-d_TAcWYo52snUYtgVYqQ';
+
+    const defaultOptions = {
+      headers: {
+        Authorization: `Basic ${btoa(client_id + ':' + client_secret)}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    };
+
+    !apiToken &&
+      apiCode &&
+      axios
+        .post(
+          'https://accounts.spotify.com/api/token',
+          qs.stringify({
+            code: apiCode,
+            grant_type: 'authorization_code',
+            redirect_uri,
+          }),
+          defaultOptions
+        )
+        .then(function (response) {
+          console.log(response.data);
+          setAPIToken(response.data.access_token);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    /*
+    
+    !apiToken &&
+      axios
+        .post(
+          'https://accounts.spotify.com/api/token',
+          qs.stringify({ grant_type: 'client_credentials' }),
+          defaultOptions
+        )
+        .then(function (response) {
+          console.log(response.data);
+          setAPIToken(response.data.access_token);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+*/
+/*
+    const options = {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    apiToken &&
+      axios
+        .get('https://api.spotify.com/v1/me/player/currently-playing', options)
+        .then(function (response) {
+          setTrack(response.data.item);
+          console.log(response.data.item);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {.
+          // always executed
+        });*/
+
+
+  <div
+                style={{
+                  position: 'absolute',
+                  left: 'calc(50% - 30vh)',
+                  bottom: '24%',
+                  width: '26vh',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    position: 'absolute',
+                    top: 200,
+                  }}
+                >
+                  <Note />
+                  <Note />
+                  <Note />
+                </div>
+                <img src={radio} />
+
+                <Typography
+                  style={{
+                    color: '#fff',
+                    fontSize: '1vh',
+                    position: 'absolute',
+                    width: '40%',
+                    background: 'green',
+                    top: '14%',
+                    left: '40%',
+                    zIndex: 2,
+                  }}
+                  variant="body2"
+                >
+                  {track.name}
+                </Typography>
+              </div>

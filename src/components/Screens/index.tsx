@@ -3,7 +3,7 @@ import { useStyles } from './styles';
 import ReactPlayer from 'react-player/youtube';
 import { tv, drtv } from '../../assets';
 import clsx from 'clsx';
-export const Screens = () => {
+export const Screens = (props: { onReadyCB: (index: number) => void }) => {
   const classes = useStyles();
   const [powerOn, setPowerOn] = useState<boolean>(false);
   return (
@@ -58,6 +58,7 @@ export const Screens = () => {
         playing={true}
         width="30%"
         height="30%"
+        onReady={() => props.onReadyCB(0)}
         style={{
           position: 'absolute',
           top: '9vw',
