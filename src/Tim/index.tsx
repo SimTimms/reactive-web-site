@@ -35,6 +35,11 @@ export const Tim = (props: {
             : 'grayscale(100%) brightness(30%)',
         }}
       />
+      <div style={{ position: 'absolute', top: 0 }}>
+        <svg>
+          <polyline points="20,20 800,200 950,500 0,800 0,0"></polyline>
+        </svg>
+      </div>
     </div>
   );
 };
