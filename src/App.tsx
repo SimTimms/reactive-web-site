@@ -160,7 +160,7 @@ function App() {
       <ParallaxProvider>
         <div
           style={{
-            height: '100vh',
+            height: '100%',
             width: '100vw',
             zIndex: -1,
             position: 'fixed',
