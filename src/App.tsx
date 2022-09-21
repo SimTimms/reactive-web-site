@@ -58,7 +58,7 @@ function App() {
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
-  const [windowOffset, setWindowOffset] = useState<boolean>(false);
+  const [windowOffset, setWindowOffset] = useState<number>(0);
 
   const [scrollPosition, setPosition] = useState(0);
 
@@ -70,15 +70,15 @@ function App() {
     if (
       getWindowDimensions().height < windowDimensions.height &&
       mobile &&
-      windowOffset === false
+      windowOffset === 0
     ) {
-      setWindowOffset(true);
+      setWindowOffset(windowDimensions.height - getWindowDimensions().height);
     } else if (
       getWindowDimensions().height >= windowDimensions.height &&
       mobile &&
       windowOffset
     ) {
-      setWindowOffset(false);
+      setWindowOffset(windowDimensions.height - getWindowDimensions().height);
       //  setWindowDimensions(getWindowDimensions());
     }
   }
@@ -199,7 +199,10 @@ function App() {
               setSpeech={toggleTheme}
             />
           </Parallax>
-          <Parallax speed={50} translateY={[windowOffset ? -100 : -0, -200]}>
+          <Parallax
+            speed={50}
+            translateY={[windowOffset !== 0 ? windowOffset : 0, -200]}
+          >
             <div
               ref={fadeTim}
               onClick={() => toggleTheme(speechObject('radio'))}
