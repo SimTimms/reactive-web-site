@@ -6,8 +6,8 @@ import { Parallax } from 'react-scroll-parallax';
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export const Flyover = (props: { powerOn: boolean }) => {
-  const { powerOn } = props;
+export const Flyover = (props: { powerOn: boolean; windowOffset: number }) => {
+  const { powerOn, windowOffset } = props;
   const mobile = useMediaQuery('(max-width:700px)');
   const [hasLoaded, setHasLoaded] = useState<boolean>(false);
   const [videoLoaded, setVideoLoaded] = useState<boolean[]>([
@@ -42,7 +42,7 @@ export const Flyover = (props: { powerOn: boolean }) => {
         position: 'relative',
       }}
     >
-      <Parallax speed={60}>
+      <Parallax translateY={[windowOffset !== 0 ? 200 + windowOffset : 200, 0]}>
         <Typography
           variant="h1"
           style={{
@@ -56,7 +56,7 @@ export const Flyover = (props: { powerOn: boolean }) => {
           On You<span style={{ color: '#aaa' }}>Tube</span>
         </Typography>
       </Parallax>
-      <Parallax speed={140}>
+      <Parallax translateY={[windowOffset !== 0 ? windowOffset : 0, -400]}>
         <Screens onReadyCB={onReadyCB} />
       </Parallax>
       {(videoLoaded[0] || mobile) && (

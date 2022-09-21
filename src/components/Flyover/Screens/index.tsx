@@ -14,8 +14,7 @@ export const Screens = (props: { onReadyCB: (index: number) => void }) => {
   return (
     <div
       style={{
-        position: 'absolute',
-        width: mobile ? '100vw' : '60vw',
+        width: mobile ? '100vw' : '50vw',
         height: mobile ? '64vw' : '40vw',
         left: mobile ? '0%' : '38vw',
         top: '13vh',
@@ -58,13 +57,13 @@ export const Screens = (props: { onReadyCB: (index: number) => void }) => {
         loop={true}
         playing={true}
         light={mobile && !lightMode}
-        width="30%"
-        height="32%"
+        width={mobile ? '30%' : '18%'}
+        height="34%"
         onReady={() => props.onReadyCB(0)}
         style={{
           position: 'absolute',
-          top: mobile ? '23%' : '22%',
-          left: '34%',
+          top: mobile ? '23%' : '27%',
+          left: mobile ? '34%' : '24%',
         }}
       />
     </div>

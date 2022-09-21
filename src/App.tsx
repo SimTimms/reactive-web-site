@@ -210,7 +210,9 @@ function App() {
               <Radio powerOn={powerOn} />
             </div>
           </Parallax>
-          {loadFlyover && <Flyover powerOn={powerOn} />}
+          {loadFlyover && (
+            <Flyover powerOn={powerOn} windowOffset={windowOffset} />
+          )}
           <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
 
