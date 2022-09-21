@@ -56,7 +56,8 @@ export const Flyover = (props: { powerOn: boolean; windowOffset: number }) => {
           On You<span style={{ color: '#aaa' }}>Tube</span>
         </Typography>
       </Parallax>
-      <Parallax translateY={[windowOffset !== 0 ? -windowOffset : 0, -400]}>
+      {windowOffset}
+      <Parallax translateY={[windowOffset !== 0 ? windowOffset : 0, -400]}>
         <Screens onReadyCB={onReadyCB} />
       </Parallax>
       {(videoLoaded[0] || mobile) && (
