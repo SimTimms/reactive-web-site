@@ -22,12 +22,8 @@ import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
+function getWindowDimensions(scrollPage: HTMLDivElement) {
+  return scrollPage.clientHeight;
 }
 
 function App() {
@@ -55,9 +51,7 @@ function App() {
   const menuLoader = useRef<null | HTMLDivElement>(null);
   const scrollPage = useRef<null | HTMLDivElement>(null);
   const mobile = useMediaQuery('(max-width:700px)');
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+  const [windowDimensions, setWindowDimensions] = useState(0);
   const [windowOffset, setWindowOffset] = useState<number>(0);
 
   const [scrollPosition, setPosition] = useState(0);
@@ -67,23 +61,25 @@ function App() {
   }
 
   function handleResize() {
-    if (
-      getWindowDimensions().height < windowDimensions.height &&
-      mobile &&
-      windowOffset === 0
-    ) {
-      setWindowOffset(windowDimensions.height - getWindowDimensions().height);
-    } else if (
-      getWindowDimensions().height >= windowDimensions.height &&
-      mobile &&
-      windowOffset
-    ) {
-      setWindowOffset(0);
-      //  setWindowDimensions(getWindowDimensions());
+    if (scrollPage.current) {
+      const newHeight = getWindowDimensions(scrollPage.current);
+      if (newHeight < windowDimensions && mobile && windowOffset === 0) {
+        setWindowOffset(windowDimensions - newHeight);
+      } else if (
+        getWindowDimensions(scrollPage.current) >= windowDimensions &&
+        mobile &&
+        windowOffset !== 0
+      ) {
+        setWindowOffset(0);
+      }
     }
   }
 
   useEffect(() => {
+    if (windowDimensions === 0 && scrollPage.current) {
+      console.log('First', scrollPage.current.clientHeight);
+      setWindowDimensions(scrollPage.current.clientHeight);
+    }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('scroll', updatePosition);
   }, [windowDimensions, windowOffset]);
@@ -159,7 +155,6 @@ function App() {
     setSpeechOn(true);
   }
 
-  console.log(windowOffset);
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
