@@ -158,7 +158,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
-        <div className={classes.root} ref={scrollPage}>
+        <div
+          style={{ height: '100vh', width: '100vw', zIndex: -1 }}
+          ref={scrollPage}
+        ></div>
+        <div className={classes.root}>
           <Logo isOn={powerOn} />
           <MenuButton powerOn={powerOn} onClickEvent={toggleMenuButton} />
           <PowerButton loadCards={powerOn} onClickEvent={toggleLoadButton} />
