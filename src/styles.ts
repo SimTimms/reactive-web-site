@@ -8,6 +8,7 @@ export const useStyles = makeStyles(() => ({
     flexWrap: 'wrap',
     overflow: 'hidden',
     width: '100vw',
+    height'100%'
   },
   menuWrapper: {
     background: 'rgba(0, 0, 0, 0.)',
