@@ -23,7 +23,8 @@ import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 function getWindowDimensions(scrollPage: HTMLDivElement) {
-  return scrollPage.clientHeight;
+  console.log(window.innerHeight);
+  return window.innerHeight;
 }
 
 function App() {
