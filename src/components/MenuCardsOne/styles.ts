@@ -1,5 +1,4 @@
 import { makeStyles } from '@mui/styles';
-
 export const useStyles = makeStyles((theme) => ({
   cardWrapperOn: {
     display: 'flex',
@@ -12,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: 'auto',
     marginTop: 'auto',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     flexWrap: 'wrap',
     overflow: 'hidden',
     filter: 'grayscale(0%) brightness(100%)',

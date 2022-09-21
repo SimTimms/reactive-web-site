@@ -70,4 +70,11 @@ export const useStyles = makeStyles(() => ({
   state3: {
     opacity: 1,
   },
+  h1Title: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: '3vw !important',
+    fontFamily: `'Rubik Burned', cursive !important`,
+    textShadow: '4px 4px 6px rgba(0,0,0,1)',
+  },
 }));

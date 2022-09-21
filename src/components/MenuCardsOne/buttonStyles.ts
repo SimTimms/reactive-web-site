@@ -12,7 +12,8 @@ export const useStylesOne = makeStyles((theme) => ({
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: 'rgba(0,0,0,0)',
-
+    display: 'flex',
+    alignItems: 'center',
     opacity: 0.8,
     '&:hover': { transition: 'all 300ms', color: '#222', opacity: 1 },
   },

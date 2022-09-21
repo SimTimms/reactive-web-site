@@ -35,14 +35,14 @@ export const Flyover = (props: { powerOn: boolean; windowOffset: number }) => {
     <div
       style={{
         width: '100vw',
-        height: powerOn ? '' : '0vh',
+        height: powerOn ? '50vh' : '0vh',
         overflow: powerOn ? 'visible' : 'hidden',
         zIndex: 12,
         marginTop: '-2%',
         position: 'relative',
       }}
     >
-      <Parallax translateY={[windowOffset !== 0 ? 200 + windowOffset : 200, 0]}>
+      <Parallax speed={50}>
         <Typography
           variant="h1"
           style={{
@@ -56,8 +56,7 @@ export const Flyover = (props: { powerOn: boolean; windowOffset: number }) => {
           On You<span style={{ color: '#aaa' }}>Tube</span>
         </Typography>
       </Parallax>
-      {windowOffset}
-      <Parallax translateY={[windowOffset !== 0 ? windowOffset : 0, -400]}>
+      <Parallax speed={140}>
         <Screens onReadyCB={onReadyCB} />
       </Parallax>
       {(videoLoaded[0] || mobile) && (

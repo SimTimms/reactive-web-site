@@ -5,6 +5,7 @@ import { useStyles } from './styles';
 import { ParallaxProvider } from 'react-scroll-parallax';
 import { Parallax } from 'react-scroll-parallax';
 import clsx from 'clsx';
+import { Typography } from '@mui/material';
 
 //Helpers
 import { speechObject, skillSpeech } from './helpers/speeches';
@@ -23,7 +24,6 @@ import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 function getWindowDimensions(scrollPage: HTMLDivElement) {
-  console.log(window.innerHeight);
   return window.innerHeight;
 }
 
@@ -159,17 +159,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
-        <div
-          style={{
-            height: '100%',
-            width: '100vw',
-            zIndex: -1,
-            position: 'fixed',
-            top: 0,
-            left: 0,
-          }}
-          ref={scrollPage}
-        ></div>
         <div className={classes.root}>
           <Logo isOn={powerOn} />
           <MenuButton powerOn={powerOn} onClickEvent={toggleMenuButton} />
@@ -206,10 +195,7 @@ function App() {
               setSpeech={toggleTheme}
             />
           </Parallax>
-          <Parallax
-            speed={50}
-            translateY={[windowOffset !== 0 ? windowOffset : 0, -200]}
-          >
+          <Parallax speed={50}>
             <div
               ref={fadeTim}
               onClick={() => toggleTheme(speechObject('radio'))}
@@ -222,13 +208,18 @@ function App() {
           )}
           <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
-
-          {/*
+          {loadGrid && powerOn && (
+            <Parallax speed={0}>
+              <Typography variant="h1" className={classes.h1Title}>
+                Tech<span style={{ color: '#aaa' }}> Stack</span>
+              </Typography>
+            </Parallax>
+          )}
           {loadGrid && powerOn && (
             <Parallax speed={50}>
               <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
             </Parallax>
-          )}*/}
+          )}
           {/*
           <div className={classes.column} style={{ marginTop: 0 }}>
             <div className={classes.state2} style={{ marginTop: 80 }}>

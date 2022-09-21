@@ -39,61 +39,48 @@ export const GridCard = React.memo(
     }, [delay]);
     return (
       <div
-        className={clsx({
-          [classes.cardWrapper]: powerOn === true,
-          [classes.cardWrapperOn]: isVisible,
-          [classes.cardWrapperPurple]: card.bgColor === 'purple',
-          [classes.cardWrapperYellow]: card.bgColor === 'yellow',
-          [classes.cardWrapperBlue]: card.bgColor === 'blue',
-          [classes.cardWrapperGreen]: card.bgColor === 'green',
-          [classes.cardWrapperBlack]: card.bgColor === 'black',
-        })}
-        onClick={() => onClickEvent()}
-        style={{ position: 'relative' }}
-        onMouseEnter={() => (card.sound ? play() : null)}
+        style={{
+          padding: '1%',
+          width: '8vw',
+          height: '8vw',
+          minWidth: 50,
+          minHeight: 50,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          flexDirection: 'column',
+        }}
       >
         <div
-          style={{
-            width: '100%',
-            height: '100%',
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className={clsx({
+            [classes.cardWrapper]: powerOn === true,
+            [classes.cardWrapperOn]: isVisible,
+            [classes.cardWrapperPurple]: card.bgColor === 'purple',
+            [classes.cardWrapperYellow]: card.bgColor === 'yellow',
+            [classes.cardWrapperBlue]: card.bgColor === 'blue',
+            [classes.cardWrapperGreen]: card.bgColor === 'green',
+            [classes.cardWrapperBlack]: card.bgColor === 'black',
+          })}
+          onClick={() => onClickEvent()}
+          style={{ position: 'relative' }}
+          onMouseEnter={() => (card.sound ? play() : null)}
         >
-          <Typography
-            variant="body2"
+          <div
+            className={`${classes.cardWrapperBox} `}
             style={{
-              color: 'rgba(0,0,0,0.7)',
-              fontWeight: 700,
-              paddingLeft: 3,
-              paddingRight: 3,
-              marginTop: 0,
-              width: '90%',
-              fontSize: '90%',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${card.image})`,
+              filter: 'grayscale(100%) opacity(100%)',
+              top: 0,
+              left: 0,
+              zIndex: 0,
+              padding: 10,
+              boxSizing: 'border-box',
             }}
-          >
-            {card.name}
-          </Typography>
+          ></div>
         </div>
-
-        <div
-          className={`${classes.cardWrapperBox} `}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundImage: `url(${card.image})`,
-            backgroundSize: `150%`,
-            filter: 'grayscale(100%) opacity(10%)',
-            top: 0,
-            left: 0,
-            zIndex: 0,
-          }}
-        ></div>
       </div>
     );
   }

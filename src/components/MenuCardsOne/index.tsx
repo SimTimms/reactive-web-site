@@ -1,47 +1,50 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-
 import { backend, frontEnd, infrastructure, data } from '../../data/skillCards';
 import { GridCard } from '../../modules/module-grid-card';
 import { ISpeech } from '../../interface/ISpeech';
 import { useStyles } from './styles';
 import { Button } from './Button';
 import { ENUM_COLORS } from '../../enum';
-import { Parallax } from 'react-scroll-parallax';
 
 export const MenuCardsOne = React.memo(
   (props: { toggleTheme: (value: ISpeech) => void; powerOn: boolean }) => {
     const [renderArr, setRenderArr] = useState<JSX.Element[]>([]);
     const [sortBy, setSortBy] = useState<string>('');
+    const [filter, setFilter] = useState<string[]>([]);
     const classes = useStyles();
 
+    function changeSortBy(newValue: string) {
+      setSortBy(newValue);
+    }
+    function changeFilter(newValue: string) {
+      const exists = filter.indexOf(newValue);
+      const shallowClone = [...filter];
+      if (exists > -1) {
+        shallowClone.splice(exists, 1);
+      } else {
+        shallowClone.push(newValue);
+      }
+      console.log(shallowClone);
+      setFilter(shallowClone);
+    }
     useEffect(() => {
       let arr = [];
-      let thisArr = [...backend, ...frontEnd, ...infrastructure, ...data];
+      let thisArr = [];
 
-      switch (sortBy) {
-        case 'front-end':
-          thisArr = [...frontEnd];
-          break;
-
-        case 'back-end':
-          thisArr = [...backend];
-          break;
-
-        case 'data':
-          thisArr = [...data];
-          break;
-
-        case 'infra':
-          thisArr = [...infrastructure];
-          break;
-
-        default:
-          thisArr = [...backend, ...frontEnd, ...infrastructure, ...data];
+      for (let i = 0; i < filter.length; i++) {
+        const filterName = filter[i];
+        filterName === 'front-end' && thisArr.push(...frontEnd);
+        filterName === 'back-end' && thisArr.push(...backend);
+        filterName === 'data' && thisArr.push(...data);
+        filterName === 'infra' && thisArr.push(...infrastructure);
       }
 
       do {
-        const randomPos = Math.floor(Math.random() * thisArr.length);
+        const randomPos =
+          sortBy === 'random'
+            ? Math.floor(Math.random() * thisArr.length)
+            : thisArr.length;
         thisArr.splice(randomPos, 0, {
           name: '',
           bold: '',
@@ -50,6 +53,17 @@ export const MenuCardsOne = React.memo(
           sound: '',
         });
       } while (thisArr.length < 25);
+
+      switch (sortBy) {
+        case 'color':
+          thisArr = thisArr.sort((a, b) =>
+            !a.bgColor || !b.bgColor ? 0 : a.bgColor > b.bgColor ? -1 : 1
+          );
+          break;
+
+        default:
+          break;
+      }
 
       arr = thisArr.map((card, index) => (
         <GridCard
@@ -64,7 +78,7 @@ export const MenuCardsOne = React.memo(
       ));
 
       setRenderArr(arr);
-    }, [sortBy]);
+    }, [sortBy, filter]);
 
     return (
       <div
@@ -73,7 +87,7 @@ export const MenuCardsOne = React.memo(
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-          height: '100vh',
+          marginTop: 100,
           background: '#353b45',
           zIndex: 20,
         }}
@@ -87,38 +101,49 @@ export const MenuCardsOne = React.memo(
         >
           <Button
             title="Front-End"
-            onClickEvent={() => setSortBy('front-end')}
+            onClickEvent={() => changeFilter('front-end')}
             color={ENUM_COLORS.Purple}
+            filter={true}
           />
           <Button
             title="Back-End"
-            onClickEvent={() => setSortBy('back-end')}
+            onClickEvent={() => changeFilter('back-end')}
             color={ENUM_COLORS.Green}
+            filter={true}
           />
           <Button
             title="Data"
-            onClickEvent={() => setSortBy('data')}
+            onClickEvent={() => changeFilter('data')}
             color={ENUM_COLORS.Blue}
+            filter={true}
           />
           <Button
             title="Infrastructure"
-            onClickEvent={() => setSortBy('infra')}
+            onClickEvent={() => changeFilter('infra')}
             color={ENUM_COLORS.Yellow}
+            filter={true}
           />
           <Button
-            title="All"
-            onClickEvent={() => setSortBy('')}
-            color={ENUM_COLORS.Turquoise}
+            title="Neat"
+            onClickEvent={() => changeSortBy('color')}
+            color={ENUM_COLORS.Yellow}
+            sort={true}
+          />
+          <Button
+            title="Scatter"
+            onClickEvent={() => changeSortBy('random')}
+            color={ENUM_COLORS.Yellow}
+            sort={true}
           />
         </div>
 
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            width: '90vw',
-            height: '90vh',
-            justifyContent: 'center',
+            alignItems: 'space-between',
+            width: '100vw',
+            maxWidth: 800,
+            justifyContent: 'space-between',
             position: 'relative',
           }}
         >
