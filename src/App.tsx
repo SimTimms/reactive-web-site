@@ -58,7 +58,7 @@ function App() {
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
-  const [windowOffset, setWindowOffset] = useState<number>();
+  const [windowOffset, setWindowOffset] = useState<boolean>(false);
 
   const [scrollPosition, setPosition] = useState(0);
 
@@ -66,19 +66,27 @@ function App() {
     const position = window.pageYOffset;
   }
 
-  useEffect(() => {
-    function handleResize() {
-      if (getWindowDimensions().height < windowDimensions.height && mobile) {
-        window.scrollTo(0, window.pageYOffset - 100);
-        setWindowDimensions(getWindowDimensions());
-      }
+  function handleResize() {
+    if (
+      getWindowDimensions().height < windowDimensions.height &&
+      mobile &&
+      windowOffset === false
+    ) {
+      setWindowOffset(true);
+    } else if (
+      getWindowDimensions().height >= windowDimensions.height &&
+      mobile &&
+      windowOffset
+    ) {
+      setWindowOffset(false);
+      //  setWindowDimensions(getWindowDimensions());
     }
+  }
 
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', updatePosition);
-    // updatePosition();
     return () => window.removeEventListener('scroll', updatePosition);
-  }, [windowDimensions, scrollPage]);
+  }, [windowDimensions, windowOffset]);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
@@ -151,6 +159,7 @@ function App() {
     setSpeechOn(true);
   }
 
+  console.log(windowOffset);
   return (
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
@@ -190,7 +199,7 @@ function App() {
               setSpeech={toggleTheme}
             />
           </Parallax>
-          <Parallax speed={50}>
+          <Parallax speed={50} translateY={[windowOffset ? -100 : -0, -200]}>
             <div
               ref={fadeTim}
               onClick={() => toggleTheme(speechObject('radio'))}
