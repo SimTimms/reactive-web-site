@@ -78,7 +78,7 @@ function App() {
       mobile &&
       windowOffset
     ) {
-      setWindowOffset(windowDimensions.height - getWindowDimensions().height);
+      setWindowOffset(0);
       //  setWindowDimensions(getWindowDimensions());
     }
   }
