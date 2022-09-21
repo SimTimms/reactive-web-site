@@ -159,7 +159,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <ParallaxProvider>
         <div
-          style={{ height: '100vh', width: '100vw', zIndex: -1 }}
+          style={{
+            height: '100vh',
+            width: '100vw',
+            zIndex: -1,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}
           ref={scrollPage}
         ></div>
         <div className={classes.root}>
