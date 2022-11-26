@@ -5,11 +5,18 @@ export const useStyles = makeStyles(() => ({
     width: '100vw',
     zIndex: 12,
     marginTop: '0',
-    position: 'relative',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     flexDirection: 'column',
+    opacity: 0,
+    transition: 'all 200ms',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
+  wrapperOn: {
+    opacity: 1,
   },
   h1Title: {
     textAlign: 'center',
@@ -20,11 +27,9 @@ export const useStyles = makeStyles(() => ({
   },
   wrapperTwo: {
     position: 'relative',
-    left: 0,
-    width: '50%',
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    margin: 'auto',
     cursor: 'pointer',
   },
   wrapperThree: {

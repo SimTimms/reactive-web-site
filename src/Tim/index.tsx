@@ -8,8 +8,9 @@ export const Tim = (props: {
   powerOn: boolean;
   menuOn: boolean;
   setSpeech: (props: ISpeech) => void;
+  tshirt: string;
 }) => {
-  const { scrollPosition, powerOn, menuOn, setSpeech } = props;
+  const { scrollPosition, powerOn, menuOn, setSpeech, tshirt } = props;
   const classes = useStyles();
   return (
     <div
@@ -33,6 +34,19 @@ export const Tim = (props: {
                 100 - scrollPosition / 10
               }%)`
             : 'grayscale(100%) brightness(30%)',
+        }}
+      />
+      <img
+        src={tshirt}
+        style={{
+          position: 'absolute',
+          marginTop: '-34vh',
+          marginLeft: -18,
+          width: '10vh',
+          filter: 'grayscale(30%) brightness(30%)',
+          opacity: 0.3,
+          borderRadius: '50%',
+          boxShadow: '-3px 3px 10px rgba(255,255,255,1)',
         }}
       />
     </div>

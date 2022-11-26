@@ -19,6 +19,7 @@ export const SkillCards = React.memo(
           }
           delay={index + 1}
           powerOn={true}
+          arrCount={skillCards.length}
         />
       ));
       setRenderArr(arr);

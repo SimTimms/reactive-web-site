@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Typography } from '@mui/material';
 import { ENUM_COLORS } from '../../enum';
 import { useStylesOne } from './buttonStyles';
@@ -14,16 +15,22 @@ export const Button = (props: {
 }) => {
   const { title, onClickEvent, color } = props;
   const classes = useStylesOne(props);
+  const [isOn, setIsOn] = useState<boolean>(false);
   return (
     <button
       className={clsx({
         [classes.button]: true,
       })}
-      onClick={() => onClickEvent()}
+      onClick={() => {
+        onClickEvent();
+        setIsOn(isOn ? false : true);
+      }}
     >
-      {props.filter && <FilterAltIcon />}
-      {props.sort && <ShuffleIcon />}
-      <Typography variant="body2">{title}</Typography>
+      <Typography variant="body2">
+        <span style={{ color: '#9a66b8' }}>const</span>{' '}
+        <span style={{ color: '#6183c6' }}>{title}</span> ={' '}
+        <span style={{ color: '#f280cf' }}>{isOn ? 'true' : 'false'};</span>
+      </Typography>
     </button>
   );
 };

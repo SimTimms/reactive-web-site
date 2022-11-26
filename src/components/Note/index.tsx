@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStyles } from './styles';
-import { note, note2 } from '../../assets';
+import { note } from '../../assets';
 import clsx from 'clsx';
 export function Note(props: { isOn: boolean }) {
   const classes = useStyles();

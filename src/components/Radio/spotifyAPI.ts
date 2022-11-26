@@ -64,10 +64,12 @@ export const spotifyAPI = (setTrack: (props: IRadio) => void) => {
       })
       .then(function (response) {
         const isPlaying = response.data.item;
+        const albumArt = response.data.item.album.images[0].url;
         setTrack({
           name: isPlaying ? isPlaying.name : '',
           isPlaying: response.data.is_playing,
           artist: isPlaying ? isPlaying.artists[0].name : '',
+          art: isPlaying ? albumArt : '',
         });
       })
       .catch(function (error) {
@@ -100,12 +102,14 @@ export const spotifyAPI = (setTrack: (props: IRadio) => void) => {
                   )
                   .then(function (response) {
                     const isPlaying = response.data.item;
+                    const albumArt = response.data.item.album.images[0].url;
                     setTrack({
                       name: isPlaying ? response.data.item.name : '',
                       isPlaying: response.data.is_playing,
                       artist: isPlaying
                         ? response.data.item.artists[0].name
                         : '',
+                      art: albumArt,
                     });
                   })
                   .catch(function (error) {

@@ -10,7 +10,7 @@ export const useStyles = makeStyles(() => ({
     width: '80%',
     position: 'fixed',
     bottom: 20,
-    zIndex: 12,
+    zIndex: 103,
     margin: 'auto',
     boxShadow: '5px 5px 30px 40px rgba(0,0,0,0.3)',
   },

@@ -77,4 +77,30 @@ export const useStyles = makeStyles(() => ({
     fontFamily: `'Rubik Burned', cursive !important`,
     textShadow: '4px 4px 6px rgba(0,0,0,1)',
   },
+  iconBar: {
+    position: 'fixed',
+    right: 0,
+    bottom: 0,
+    zIndex: 100,
+    display: 'flex',
+  },
+  iconWrapper: {
+    margin: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    color: 'rgba(255,255,255,0.7)',
+  },
+  vsCode: {
+    background: '#fff',
+    padding: 10,
+    borderRadius: 10,
+    width: 32,
+
+    '&:hover': {
+      cursor: 'pointer',
+      boxShadow: '1px 1px 10px rgba(255,255,255,0.7)',
+    },
+  },
 }));

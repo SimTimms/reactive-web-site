@@ -22,6 +22,13 @@ import Logo from './components/Logo';
 import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { BusinessCards } from './components/BusinessCards';
+import AppIcon from './AppIcon';
+//Assets
+import vscode from './assets/vscode.png';
+import aicon from './assets/aicon.png';
+import chatman from './assets/chatman.png';
+import radioicon from './assets/radioicon.png';
 
 function getWindowDimensions(scrollPage: HTMLDivElement) {
   return window.innerHeight;
@@ -33,16 +40,23 @@ function App() {
   //Yes - powerOn affects every component.
   const [powerOn, setPowerOn] = useState<boolean>(false);
   //Maybe - Legacy code that needs to be refactored
+  const [availableOn, setAvailableOn] = useState<boolean>(false);
+  //Maybe - Legacy code that needs to be refactored
   const [skillOn, setSkillsOn] = useState<boolean>(false);
+  const [tshirt, setTshirt] = useState<string>('');
   //No - This should only affect the speech man but the trigger action is on a different component so use Context
   const [speech, setSpeech] = useState<ISpeech>(speechObject('welcome'));
-  //No - This should dispay/hide the availability widget
-  const [availability, setAvailability] = useState<boolean>(false);
   //Maybe - Might not be usedf
   const [dashboardArray, setDashboardArray] = useState<JSX.Element[]>([]);
 
-  const [loadGrid, setLoadGrid] = useState(false);
-  const [loadFlyover, setLoadFlyover] = useState(false);
+  const [vsCode, setVsCode] = useState<boolean>(false);
+  const [radioIsOn, setRadioIsOn] = useState<boolean>(false);
+
+  const [loadPage, setLoadPage] = useState({
+    flyover: false,
+    radio: false,
+    grid: false,
+  });
   const [speechOn, setSpeechOn] = useState(false);
   const [menuOn, setMenuOn] = useState(false);
 
@@ -50,40 +64,10 @@ function App() {
   const fadeTim = useRef<null | HTMLDivElement>(null);
   const unfadeTim = useRef<null | HTMLDivElement>(null);
   const menuLoader = useRef<null | HTMLDivElement>(null);
-  const scrollPage = useRef<null | HTMLDivElement>(null);
-  const mobile = useMediaQuery('(max-width:700px)');
-  const [windowDimensions, setWindowDimensions] = useState(0);
+
   const [windowOffset, setWindowOffset] = useState<number>(0);
 
   const [scrollPosition, setPosition] = useState(0);
-
-  function updatePosition() {
-    const position = window.pageYOffset;
-  }
-
-  function handleResize() {
-    if (scrollPage.current) {
-      const newHeight = getWindowDimensions(scrollPage.current);
-      if (newHeight < windowDimensions && mobile && windowOffset === 0) {
-        setWindowOffset(windowDimensions - newHeight);
-      } else if (
-        getWindowDimensions(scrollPage.current) >= windowDimensions &&
-        mobile &&
-        windowOffset !== 0
-      ) {
-        setWindowOffset(0);
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (windowDimensions === 0 && scrollPage.current) {
-      console.log('First', scrollPage.current.clientHeight);
-      setWindowDimensions(scrollPage.current.clientHeight);
-    }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('scroll', updatePosition);
-  }, [windowDimensions, windowOffset]);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
@@ -91,12 +75,12 @@ function App() {
         const target = entries[0];
 
         if (target.isIntersecting) {
-          !loadFlyover && setLoadFlyover(true);
-          !loadGrid && setLoadGrid(true);
+          !loadPage.flyover && setLoadPage({ ...loadPage, flyover: true });
+          !loadPage.grid && setLoadPage({ ...loadPage, grid: true });
           !speechOn && setSpeechOn(true);
         }
       },
-      [loadGrid, speechOn, menuOn, loadFlyover]
+      [loadPage, speechOn]
     );
 
   const fadeTimHandler: (entries: IntersectionObserverEntry[]) => void =
@@ -146,11 +130,6 @@ function App() {
     setSkillsOn(skillOn ? false : true);
   }
 
-  function toggleAvailability(): void {
-    setDashboardArray([...dashboardArray, <Availability />]);
-    setAvailability(availability ? false : true);
-  }
-
   function toggleTheme(value: ISpeech) {
     setSpeech(value);
     setSpeechOn(true);
@@ -186,40 +165,69 @@ function App() {
               />
             ))}
           </div>
-          <Parallax speed={1}>
-            <div ref={unfadeTim} style={{ marginTop: 20 }}></div>
-            <Tim
-              scrollPosition={scrollPosition}
-              powerOn={powerOn}
-              menuOn={menuOn}
-              setSpeech={toggleTheme}
-            />
-          </Parallax>
-          <Parallax speed={50}>
-            <div
-              ref={fadeTim}
-              onClick={() => toggleTheme(speechObject('radio'))}
-            >
-              <Radio powerOn={powerOn} />
-            </div>
-          </Parallax>
-          {loadFlyover && (
+          <Radio
+            powerOn={powerOn}
+            radioOn={radioIsOn}
+            setRadioOn={() => setRadioIsOn}
+            setTshirt={setTshirt}
+          />
+
+          <div ref={unfadeTim} style={{ marginTop: 20 }}></div>
+          <Availability powerOn={availableOn} />
+
+          <Tim
+            scrollPosition={scrollPosition}
+            powerOn={powerOn}
+            menuOn={menuOn}
+            setSpeech={toggleTheme}
+            tshirt={tshirt}
+          />
+
+          <div className={classes.state2}>
+            {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
+          </div>
+          <MenuCardsOne
+            toggleTheme={toggleTheme}
+            powerOn={loadPage.grid}
+            visible={vsCode}
+            setVisible={setVsCode}
+          />
+
+          {loadPage.flyover && (
             <Flyover powerOn={powerOn} windowOffset={windowOffset} />
           )}
+
           <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
-          {loadGrid && powerOn && (
-            <Parallax speed={0}>
-              <Typography variant="h1" className={classes.h1Title}>
-                Tech<span style={{ color: '#aaa' }}> Stack</span>
-              </Typography>
-            </Parallax>
-          )}
-          {loadGrid && powerOn && (
-            <Parallax speed={50}>
-              <MenuCardsOne toggleTheme={toggleTheme} powerOn={loadGrid} />
-            </Parallax>
-          )}
+          <Typography variant="h1" className={classes.h1Title}>
+            Tech<span style={{ color: '#aaa' }}> Stack</span>
+          </Typography>
+          <div className={classes.iconBar}>
+            <AppIcon
+              title="RAD!0.tsx"
+              action={() => setRadioIsOn(radioIsOn ? false : true)}
+              icon={radioicon}
+              background="#62929d"
+            />
+            <AppIcon
+              title="ChatMan.tsx"
+              action={() => setVsCode(vsCode ? false : true)}
+              icon={chatman}
+              background="#fff"
+            />
+            <AppIcon
+              title="Availability.js"
+              action={() => setAvailableOn(availableOn ? false : true)}
+              icon={aicon}
+              background="#020017"
+            />
+            <AppIcon
+              title="TechStack.tsx"
+              action={() => setVsCode(vsCode ? false : true)}
+              icon={vscode}
+              background="#fff"
+            />
+          </div>
           {/*
           <div className={classes.column} style={{ marginTop: 0 }}>
             <div className={classes.state2} style={{ marginTop: 80 }}>
@@ -246,9 +254,7 @@ function App() {
             </div>
          
 
-            <div className={classes.state2}>
-              {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
-            </div>
+       
 
             <div className={classes.row}>{dashboardArray}</div>
 
