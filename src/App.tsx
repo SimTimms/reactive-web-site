@@ -29,6 +29,7 @@ import vscode from './assets/vscode.png';
 import aicon from './assets/aicon.png';
 import chatman from './assets/chatman.png';
 import radioicon from './assets/radioicon.png';
+import Bingo from './Bingo';
 
 function getWindowDimensions(scrollPage: HTMLDivElement) {
   return window.innerHeight;
