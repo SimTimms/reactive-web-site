@@ -1,0 +1,140 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.6.16",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0,
+                1
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "name" : "Object_10",
+            "translation" : [
+                0.25394392013549805,
+                -1.766345500946045,
+                -10.807294845581055
+            ]
+        },
+        {
+            "mesh" : 0,
+            "name" : "bread-4_bread-4_0",
+            "rotation" : [
+                -0.6549521684646606,
+                0,
+                0,
+                0.7556703686714172
+            ],
+            "translation" : [
+                -0.5149832963943481,
+                6.816883087158203,
+                0.20803630352020264
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "bread-4",
+            "pbrMetallicRoughness" : {}
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "bread-4_bread-4_0",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TANGENT" : 2,
+                        "TEXCOORD_0" : 3
+                    },
+                    "indices" : 4,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 533,
+            "max" : [
+                11.348010063171387,
+                19.583120346069336,
+                6.429973602294922
+            ],
+            "min" : [
+                -11.397446632385254,
+                -19.676122665405273,
+                -6.802284240722656
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 533,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 533,
+            "type" : "VEC4"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 533,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5123,
+            "count" : 2988,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 6396,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 6396,
+            "byteOffset" : 6396
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 8528,
+            "byteOffset" : 12792
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 4264,
+            "byteOffset" : 21320
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 5976,
+            "byteOffset" : 25584
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 31560,
+            "uri" : "bread.bin"
+        }
+    ]
+}

@@ -3,7 +3,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import { useStyles } from './styles';
 import { ParallaxProvider } from 'react-scroll-parallax';
-import { Parallax } from 'react-scroll-parallax';
 import clsx from 'clsx';
 import { Typography } from '@mui/material';
 
@@ -23,6 +22,9 @@ import Availability from './components/Availability';
 import SpeechBubble from './components/SpeechBubble';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { BusinessCards } from './components/BusinessCards';
+import { SkillCards } from './components/SkillCards';
+import Bread from './Bread';
+import Tim3D from './components/Tim3D';
 import AppIcon from './AppIcon';
 //Assets
 import vscode from './assets/vscode.png';
@@ -45,6 +47,7 @@ function App() {
   //Maybe - Legacy code that needs to be refactored
   const [skillOn, setSkillsOn] = useState<boolean>(false);
   const [tshirt, setTshirt] = useState<string>('');
+  const [currentScroll, setCurrentScroll] = useState<number>(0);
   //No - This should only affect the speech man but the trigger action is on a different component so use Context
   const [speech, setSpeech] = useState<ISpeech>(speechObject('welcome'));
   //Maybe - Might not be usedf
@@ -68,7 +71,7 @@ function App() {
 
   const [windowOffset, setWindowOffset] = useState<number>(0);
 
-  const [scrollPosition, setPosition] = useState(0);
+  const [greyscaleValue, setGreyscaleValue] = useState(0);
 
   const handleObserver: (entries: IntersectionObserverEntry[]) => void =
     useCallback(
@@ -85,22 +88,26 @@ function App() {
     );
 
   const fadeTimHandler: (entries: IntersectionObserverEntry[]) => void =
-    useCallback((entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
+    useCallback(
+      (entries: IntersectionObserverEntry[]) => {
+        const target = entries[0];
+        setGreyscaleValue(target.intersectionRatio);
+      },
 
-      if (target.isIntersecting) {
-        setPosition(500);
-      }
-    }, []);
+      []
+    );
 
   const unfadeTimHandler: (entries: IntersectionObserverEntry[]) => void =
     useCallback((entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-
-      if (target.isIntersecting) {
-        setPosition(0);
-      }
     }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', (event: Event) => {
+      const lastKnownScrollPosition = window.scrollY;
+      setCurrentScroll(lastKnownScrollPosition / window.innerHeight);
+    });
+  }, []);
 
   useEffect(() => {
     const option = {
@@ -166,26 +173,39 @@ function App() {
               />
             ))}
           </div>
-          <Radio
-            powerOn={powerOn}
-            radioOn={radioIsOn}
-            setRadioOn={() => setRadioIsOn}
-            setTshirt={setTshirt}
-          />
+          {/* */}
+          {/*<Bread />*/}
 
           <div ref={unfadeTim} style={{ marginTop: 20 }}></div>
-          <Availability powerOn={availableOn} />
-
-          <Tim
-            scrollPosition={scrollPosition}
-            powerOn={powerOn}
-            menuOn={menuOn}
-            setSpeech={toggleTheme}
-            tshirt={tshirt}
-          />
-
-          <div className={classes.state2}>
-            {powerOn && <BusinessCards toggleTheme={toggleTheme} />}
+          <div
+            style={{
+              opacity: 0.1 + currentScroll * 2,
+              filter: `grayscale(${1 - currentScroll * 5})`,
+            }}
+          >
+            <Availability powerOn={true} />
+          </div>
+          <div
+            style={{
+              position: 'fixed',
+              zIndex: 1,
+            }}
+          >
+            <Tim3D />
+          </div>
+          {/*
+          <div style={{ opacity: 1 - currentScroll }}>
+            <Tim
+              greyscaleValue={1 - currentScroll}
+              powerOn={powerOn}
+              menuOn={menuOn}
+              setSpeech={toggleTheme}
+              tshirt={tshirt}
+            />
+          </div>
+          */}
+          <div className={powerOn ? classes.state2 : classes.state22}>
+            <BusinessCards toggleTheme={toggleTheme} />
           </div>
           <MenuCardsOne
             toggleTheme={toggleTheme}
@@ -193,11 +213,9 @@ function App() {
             visible={vsCode}
             setVisible={setVsCode}
           />
-
           {loadPage.flyover && (
             <Flyover powerOn={powerOn} windowOffset={windowOffset} />
           )}
-
           <div ref={loader}></div>
           <SpeechBubble powerOn={speechOn} values={speech} />
           <Typography variant="h1" className={classes.h1Title}>
@@ -229,12 +247,11 @@ function App() {
               background="#fff"
             />
           </div>
-          {/*
           <div className={classes.column} style={{ marginTop: 0 }}>
             <div className={classes.state2} style={{ marginTop: 80 }}>
               {powerOn && <SkillCards toggleTheme={toggleTheme} />}
             </div>
-        </div>*/}
+          </div>
           {/*
             <div className={classes.state1}>
               {powerOn &&

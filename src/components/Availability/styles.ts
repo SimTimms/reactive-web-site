@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles(() => ({
   widgetWrapper: {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     display: 'flex',

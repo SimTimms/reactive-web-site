@@ -4,14 +4,15 @@ import { tim } from '../assets';
 import { speechObject } from '../helpers/speeches';
 import { ISpeech } from '../interface/ISpeech';
 export const Tim = (props: {
-  scrollPosition: number;
+  greyscaleValue: number;
   powerOn: boolean;
   menuOn: boolean;
   setSpeech: (props: ISpeech) => void;
   tshirt: string;
 }) => {
-  const { scrollPosition, powerOn, menuOn, setSpeech, tshirt } = props;
+  const { greyscaleValue, powerOn, menuOn, setSpeech, tshirt } = props;
   const classes = useStyles();
+  const [glow, setGlow] = useState<number[]>([]);
   return (
     <div
       style={{
@@ -22,20 +23,42 @@ export const Tim = (props: {
         justifyContent: 'center',
         position: 'relative',
         overflow: 'hidden',
+        zIndex: 1,
+        opacity: greyscaleValue,
+        filter: `hue-rotate(${
+          (60 * (glow[0] + glow[1])) / 2
+        }deg) brightness(100%)`,
+      }}
+      onMouseMove={(e) => {
+        const { clientX, clientY } = e;
+        setGlow([clientX / window.innerWidth, clientY / window.innerHeight]);
       }}
     >
+      <div
+        style={{
+          width: 200,
+          height: 200,
+          backdropFilter: 'blur(1px)  hue-rotate(40deg) brightness(200%)',
+          filter: 'blur(25px)',
+          borderRadius: '50%',
+          position: 'absolute',
+          top: glow[1],
+          left: glow[0],
+          zIndex: 10,
+        }}
+      ></div>
+
       <img
         onClick={() => setSpeech(speechObject('aboutMe'))}
         src={tim}
         className={`${classes.tim} ${powerOn && !menuOn && classes.timOn}`}
         style={{
           filter: powerOn
-            ? `grayscale(${scrollPosition / 5}%) brightness(${
-                100 - scrollPosition / 10
-              }%)`
+            ? `grayscale(${0}%) brightness(${100}%)`
             : 'grayscale(100%) brightness(30%)',
         }}
       />
+
       <img
         src={tshirt}
         style={{
